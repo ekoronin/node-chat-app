@@ -10,4 +10,22 @@ socket.on("disconnect", function (){
 
 socket.on("newMessage", function(message){
   console.log("New message: ", message);
+  var li = $("<li></li>");
+  li.text(`${message.from} says: ${message.text}`);
+  $("#messages").append(li);
+});
+
+
+//wrap jquery
+$( document ).ready(function() {
+  $("#message-form").on("submit", function(e){
+    e.preventDefault();
+
+    socket.emit("createMessage", {
+      from: "User",
+      text: $("[name=message]").val()
+    }, function(){
+
+    });
+  });
 });
