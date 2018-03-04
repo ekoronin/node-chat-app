@@ -5,6 +5,7 @@ const publicPath = path.join(__dirname, "../public");
 const express = require("express");
 //const bodyParser = require("body-parser");
 const socketIO = require("socket.io");
+const {generateMessage} = require("./utils/message.js");
 
 const app = express();
 //app.use(bodyParser.json());
@@ -34,24 +35,13 @@ io.on("connection", (socket)=>{
     console.log(`User disconnected with ${reason}`);
   });
 
-  socket.emit("newMessage", {
-    from:"Admin",
-    text: "Welcome to the chat app"
-  });
-  socket.broadcast.emit("newMessage", {
-    from:"Admin",
-    text: "New user joined the chat",
-    createdAt: new Date().getTime()
-  });
+  socket.emit("newMessage", generateMessage("Admin", "Welcome to the chat app"));
+  socket.broadcast.emit("newMessage", generateMessage("Admin", "New user joined the chat"));
 
 
   socket.on("createMessage", (message)=>{
     console.log("Create message", message);
-    io.emit("newMessage", {
-      from: message.from,
-      text: message.text,
-      createdAt: new Date().getTime()
-    });// to everybody connected
+    io.emit("newMessage", generateMessage( message.from,  message.text));// to everybody connected
 
     // socket.broadcast.emit("newMessage", {
     //   from: message.from,
