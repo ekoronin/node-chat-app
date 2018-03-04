@@ -33,6 +33,17 @@ io.on("connection", (socket)=>{
   socket.on("disconnect", (reason)=>{
     console.log(`User disconnected with ${reason}`);
   });
+
+
+  socket.emit("newMessage", {
+    from: "Jen",
+    text: "Hey what's going on?",
+    createdAt: new Date().getTime()
+  });
+
+  socket.on("createMessage", (message)=>{
+    console.log("Create message", message);
+  });
 });
 
 
