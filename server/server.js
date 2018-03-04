@@ -34,16 +34,32 @@ io.on("connection", (socket)=>{
     console.log(`User disconnected with ${reason}`);
   });
 
+  socket.emit("newMessage", {
+    from:"Admin",
+    text: "Welcome to the chat app"
+  });
+  socket.broadcast.emit("newMessage", {
+    from:"Admin",
+    text: "New user joined the chat",
+    createdAt: new Date().getTime()
+  });
+
 
   socket.on("createMessage", (message)=>{
-    //console.log("Create message", message);
+    console.log("Create message", message);
     io.emit("newMessage", {
       from: message.from,
       text: message.text,
       createdAt: new Date().getTime()
     });// to everybody connected
-  });
-});
+
+    // socket.broadcast.emit("newMessage", {
+    //   from: message.from,
+    //   text: message.text,
+    //   createdAt: new Date().getTime()
+    // }); //emit - //not to yourself
+  });//createMessage
+});//connection
 
 
 server.listen(port, ()=>{
