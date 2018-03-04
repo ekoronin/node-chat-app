@@ -35,14 +35,13 @@ io.on("connection", (socket)=>{
   });
 
 
-  socket.emit("newMessage", {
-    from: "Jen",
-    text: "Hey what's going on?",
-    createdAt: new Date().getTime()
-  });
-
   socket.on("createMessage", (message)=>{
-    console.log("Create message", message);
+    //console.log("Create message", message);
+    io.emit("newMessage", {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    });// to everybody connected
   });
 });
 
