@@ -42,7 +42,7 @@ io.on("connection", (socket)=>{
   socket.on("createMessage", (message, callback)=>{
     console.log("Create message", message);
     io.emit("newMessage", generateMessage( message.from,  message.text));// to everybody connected
-    callback("This is from the server");
+    callback();
     // socket.broadcast.emit("newMessage", {
     //   from: message.from,
     //   text: message.text,
@@ -52,8 +52,9 @@ io.on("connection", (socket)=>{
 
   });//createMessage
 
-  socket.on("createLocationMessage", (coords)=>{
+  socket.on("createLocationMessage", (coords, callback)=>{
     io.emit("newLocationMessage", generateLocationMessage("Admin", coords.latitude, coords.longitude));
+    callback();
   });
 
 });//connection
